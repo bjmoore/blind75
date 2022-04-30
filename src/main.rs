@@ -11,40 +11,50 @@
 
 use std::collections::HashSet;
 use std::collections::HashMap;
+use std::time::Instant;
 use rand::Rng;
+use rand::seq::SliceRandom;
 
 fn main() {
-    let mut rng = rand::thread_rng();
-    let target = rng.gen_range(-109..110);
-    let size = rng.gen_range(2..104);
+    let start = Instant::now();
 
-    let input_list = generate_test_input(target, size);
+    let run_count = 1000;
 
-    let answer = solver(&input_list, target);
+    for _x in 0..run_count {
+        problem_1(10000);
+    }
 
-    println!("target: {}, num_inputs: {}, result: [{}, {}]", target, size, input_list[answer[0]], input_list[answer[1]]);
-
-    // plug into solver
-
-    // check that result a + b = target
+    let duration = start.elapsed();   
+    println!("time taken: {:?}", duration.div_f32(run_count as f32));
 }
 
-fn generate_test_input(target: i32, size: i32) -> Vec<i32> {
+fn problem_1(size: u32) {
+    let mut rng = rand::thread_rng();
+    let target = rng.gen_range(-50000..50000);
+    let input_list = generate_test_input(target, size);
+    let answer = solver(&input_list, target);
+    
+    //println!("target: {}, num_inputs: {}, result: [{}, {}]", target, size, input_list[answer[0]], input_list[answer[1]]);
+}
+
+fn generate_test_input(target: i32, size: u32) -> Vec<i32> {
     let mut output = Vec::new();
     let mut banned_values = HashSet::new();
     let mut rng = rand::thread_rng();
 
-    let a: i32 = rng.gen_range(-109..110);
+    let a: i32 = rng.gen_range(-50000..50000);
     output.push(a);
     output.push(target - a);
 
     while output.len() < size.try_into().unwrap() {
-        let a: i32 = rng.gen_range(-109..110);
+        let a: i32 = rng.gen_range(-50000..50000);
         if !banned_values.contains(&a) {
             output.push(a);
             banned_values.insert(target - a);
         }
     }
+
+    output.shuffle(&mut rng);
 
     return output
 }
