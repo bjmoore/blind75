@@ -14,13 +14,15 @@ use std::collections::HashMap;
 use rand::Rng;
 
 fn main() {
-    let target = 5;
+    let mut rng = rand::thread_rng();
+    let target = rng.gen_range(-109..110);
+    let size = rng.gen_range(2..104);
 
-    let input_list = generate_test_input(target, 100);
+    let input_list = generate_test_input(target, size);
 
     let answer = solver(&input_list, target);
 
-    println!("{}, {}", input_list[answer[0]], input_list[answer[1]]);
+    println!("target: {}, num_inputs: {}, result: [{}, {}]", target, size, input_list[answer[0]], input_list[answer[1]]);
 
     // plug into solver
 
