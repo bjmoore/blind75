@@ -16,16 +16,17 @@ use rand::Rng;
 use rand::seq::SliceRandom;
 
 fn main() {
-    let start = Instant::now();
-
     let run_count = 1000;
+    let sizes = [100, 1000, 10000, 100000, 1000000];
 
-    for _x in 0..run_count {
-        problem_1(10000);
+    for size in sizes {
+        let start = Instant::now();
+        for _x in 0..run_count {
+            problem_1(size);
+        }
+        let duration = start.elapsed();   
+        println!("input size: {}, time taken: {:?}", size, duration.div_f32(run_count as f32));
     }
-
-    let duration = start.elapsed();   
-    println!("time taken: {:?}", duration.div_f32(run_count as f32));
 }
 
 fn problem_1(size: u32) {
